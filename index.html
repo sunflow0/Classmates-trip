@@ -324,7 +324,10 @@ onAuthStateChanged(auth, async user => {
       await signInAnonymously(auth);
     } catch (error) {
       console.error("Anonymous sign-in failed:", error);
-      alert("เข้าสู่ระบบโหวตไม่ได้ กรุณาตรวจ Authentication");
+      alert(
+  "Login failed: " + error.code +
+  "\n" + error.message
+);
     }
     return;
   }
