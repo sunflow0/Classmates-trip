@@ -166,7 +166,6 @@ function places(n){
 }
 function renderPlaces(n){
   document.getElementById(`pl${n}`).innerHTML=places(n).map((x,i)=>`<div class="place"><div class="row"><span aria-hidden="true">📍</span><input data-n="${n}" data-i="${i}" data-f="p" aria-label="Place ${i+1} name" placeholder="Place ${i+1}: We are going to visit ..." value="${esc(x.p)}"><button type="button" class="x" data-rm="${i}" data-n="${n}" aria-label="Remove place ${i+1}">✕</button></div>
-<textarea rows="2" data-n="${n}" data-i="${i}" data-f="x" aria-label="Place ${i+1} prediction" placeholder="">${esc(x.x)}</textarea>
 <textarea rows="2" data-n="${n}" data-i="${i}" data-f="d" aria-label="Place ${i+1} plans" placeholder="We are going to ... (swim, eat, take photos)">${esc(x.d)}</textarea></div>`).join("");
 }
 const grid=document.getElementById("grid");
