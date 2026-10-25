@@ -12,7 +12,70 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.5}
 header{text-align:center;padding:32px 16px 10px}
 h1{font-family:Fredoka,system-ui,sans-serif;font-weight:600;font-size:clamp(28px,6vw,44px);margin:0}
-header p{margin:6px auto 0;padding:0 12px;color:var(--soft);max-width:560px}\nmain{align-items:start}\n.card{box-shadow:0 5px 16px #3b3a4a0a;transition:transform .18s ease,box-shadow .18s ease}\n@media (hover:hover){.card:not(.full):hover{transform:translateY(-2px);box-shadow:0 9px 22px #3b3a4a12}}\n.top{min-width:0}\n.top input{min-width:0}\nbutton{transition:filter .15s ease,transform .15s ease}\nbutton:hover{filter:brightness(.97)}\nbutton:active{transform:scale(.98)}\n@media(max-width:360px){main{grid-template-columns:minmax(0,1fr);padding-inline:10px;gap:12px}.top{gap:6px}.top .badge{padding-inline:9px}.top input{font-size:16px}.top .pbtn{padding:7px 11px}}
+
+header p {
+  margin: 6px auto 0;
+  padding: 0 12px;
+  color: var(--soft);
+  max-width: 560px;
+}
+
+main {
+  align-items: start;
+}
+
+.card {
+  box-shadow: 0 5px 16px #3b3a4a0a;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+@media (hover: hover) {
+  .card:not(.full):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 9px 22px #3b3a4a12;
+  }
+}
+
+.top,
+.top input {
+  min-width: 0;
+}
+
+button {
+  transition: filter .15s ease, transform .15s ease;
+}
+
+button:hover {
+  filter: brightness(.97);
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 360px) {
+  main {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 10px;
+    gap: 12px;
+  }
+
+  .top {
+    gap: 6px;
+  }
+
+  .top .badge {
+    padding-inline: 9px;
+  }
+
+  .top input {
+    font-size: 16px;
+  }
+
+  .top .pbtn {
+    padding: 7px 11px;
+  }
+}
 main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;max-width:1100px;margin:0 auto;padding:20px 16px 48px}
 .card{--c:#ffd6e0;background:var(--card);border:2px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
 .top{background:var(--c);padding:14px 16px;display:flex;align-items:center;gap:10px}
@@ -142,5 +205,6 @@ grid.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const f=document.querySelector(".card.full");if(f)f.querySelector(".pbtn").click()}});
 </script>
+<!-- Firebase voting system goes here -->
 </body>
 </html>
