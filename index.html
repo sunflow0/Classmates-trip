@@ -205,6 +205,45 @@ grid.addEventListener("click",e=>{
 });
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){const f=document.querySelector(".card.full");if(f)f.querySelector(".pbtn").click()}});
 </script>
-<!-- Firebase voting system goes here -->
+
+<!-- Firebase voting system -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDocs,
+    collection,
+    onSnapshot,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+  import {
+    getAuth,
+    signInAnonymously
+  } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyD0hdshYJ3G_58ZoZBEnMXJFyjAUZAYovc",
+  authDomain: "classmates-trip-voting.firebaseapp.com",
+  projectId: "classmates-trip-voting",
+  storageBucket: "classmates-trip-voting.firebasestorage.app",
+  messagingSenderId: "852229513269",
+  appId: "1:852229513269:web:0a48a4cc85b0ed708e117c"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // ขั้นนี้ใช้ตรวจว่าการเชื่อมต่อ Firebase ทำงานหรือไม่
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("Firebase connected successfully");
+    })
+    .catch((error) => {
+      console.error("Firebase connection error:", error);
+    });
+</script>
 </body>
 </html>
