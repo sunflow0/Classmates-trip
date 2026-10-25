@@ -58,7 +58,7 @@ function places(n){
 }
 function renderPlaces(n){
   document.getElementById(`pl${n}`).innerHTML=places(n).map((x,i)=>`<div class="place"><div class="row"><span aria-hidden="true">📍</span><input data-n="${n}" data-i="${i}" data-f="p" aria-label="Place ${i+1} name" placeholder="Place ${i+1}: We are going to visit ..." value="${esc(x.p)}"><button type="button" class="x" data-rm="${i}" data-n="${n}" aria-label="Remove place ${i+1}">✕</button></div>
-<textarea rows="2" data-n="${n}" data-i="${i}" data-f="x" aria-label="Place ${i+1} prediction" placeholder="Look at the picture! It is going to ...">${esc(x.x)}</textarea>
+<textarea rows="2" data-n="${n}" data-i="${i}" data-f="x" aria-label="Place ${i+1} prediction" placeholder="">${esc(x.x)}</textarea>
 <textarea rows="2" data-n="${n}" data-i="${i}" data-f="d" aria-label="Place ${i+1} plans" placeholder="We are going to ... (swim, eat, take photos)">${esc(x.d)}</textarea></div>`).join("");
 }
 const grid=document.getElementById("grid");
@@ -69,7 +69,7 @@ colors.forEach((c,i)=>{
   const n=i+1,card=document.createElement("section");
   card.className="card";card.style.setProperty("--c",c);
   card.innerHTML=`<div class="top"><span class="badge">Group ${n}</span><input aria-label="Group ${n} name" data-k="g${n}-name" placeholder="Group name" value="${esc(data[`g${n}-name`])}"><button type="button" class="pbtn">Present</button></div>
-<div class="body">${fld(n,"title","Trip title","Our trip to ...","input")}${fld(n,"members","Group members","One name on each line")}${fld(n,"when","When?","We are going to go in ...")}<label>Places we are going to visit</label><div id="pl${n}" style="display:flex;flex-direction:column;gap:10px"></div><button type="button" class="add" data-add="${n}">+ Add a place</button>${fld(n,"why","Why do we want to go?","Because ...")}${fld(n,"pitch","Why should classmates choose our trip?","We think you should choose our trip because ...")}</div>`;
+<div class="body">${fld(n,"title","Trip title","Our trip to ...","input")}${fld(n,"members","Group members","One name on each line")}${fld(n,"when","When?","We are going to go in ...")}<label>Places we are going to visit</label><div id="pl${n}" style="display:flex;flex-direction:column;gap:10px"></div><button type="button" class="add" data-add="${n}">+ Add a place</button>${fld(n,"why","Why do we want to go?","Because ...")}</div>`;
   grid.appendChild(card);renderPlaces(n);
 });
 grid.addEventListener("input",e=>{
