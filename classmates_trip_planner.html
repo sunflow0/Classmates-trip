@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Classmate’s Trip Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ef;--card:#fff;--ink:#3b3a4a;--soft:#8a879b;--line:#eadfce;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#25232e;--card:#322f3d;--ink:#f4efe6;--soft:#b3aec4;--line:#4a4658}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;line-height:1.5}
+header{text-align:center;padding:32px 16px 10px}
+h1{font-family:Fredoka,system-ui,sans-serif;font-weight:600;font-size:clamp(28px,6vw,44px);margin:0}
+header p{margin:6px auto 0;padding:0 12px;color:var(--soft);max-width:560px}\nmain{align-items:start}\n.card{box-shadow:0 5px 16px #3b3a4a0a;transition:transform .18s ease,box-shadow .18s ease}\n@media (hover:hover){.card:not(.full):hover{transform:translateY(-2px);box-shadow:0 9px 22px #3b3a4a12}}\n.top{min-width:0}\n.top input{min-width:0}\nbutton{transition:filter .15s ease,transform .15s ease}\nbutton:hover{filter:brightness(.97)}\nbutton:active{transform:scale(.98)}\n@media(max-width:360px){main{grid-template-columns:minmax(0,1fr);padding-inline:10px;gap:12px}.top{gap:6px}.top .badge{padding-inline:9px}.top input{font-size:16px}.top .pbtn{padding:7px 11px}}
+main{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;max-width:1100px;margin:0 auto;padding:20px 16px 48px}
+.card{--c:#ffd6e0;background:var(--card);border:2px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.top{background:var(--c);padding:14px 16px;display:flex;align-items:center;gap:10px}
+.top .badge{font-family:Fredoka,sans-serif;font-weight:600;background:#fff;color:#3b3a4a;border-radius:99px;padding:2px 12px;white-space:nowrap}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px}
+label{font-family:Fredoka,sans-serif;font-size:14px;color:var(--soft);margin-bottom:-6px}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:transparent;border:2px dashed var(--line);border-radius:12px;padding:8px 10px;resize:vertical}
+input:focus,textarea:focus{outline:3px solid var(--c);border-style:solid}
+.top input{border:none;background:transparent;font-family:Fredoka,sans-serif;font-weight:500;font-size:18px;padding:2px 4px;color:#3b3a4a}
+.top input::placeholder{color:#3b3a4a99}
+.trip{font-family:Fredoka,sans-serif;font-size:22px;font-weight:500}
+button{font-family:Fredoka,sans-serif;font-size:15px;border:none;border-radius:99px;padding:8px 16px;background:var(--c);color:#3b3a4a;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink)}
+.card.full{position:fixed;inset:0;z-index:10;border-radius:0;overflow:auto;padding-top:env(safe-area-inset-top,0px)}
+.card.full .body{max-width:760px;width:100%;margin:0 auto}
+.card.full .trip{font-size:clamp(28px,6vw,44px)}
+.card.full textarea{font-size:20px}
+.card.full input,.card.full textarea{border-color:transparent;resize:none}
+.place{border:2px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.place .row{display:flex;gap:8px;align-items:center}
+.place .row input{font-family:Fredoka,sans-serif;font-weight:500;font-size:17px}
+.x{background:transparent;border:2px solid var(--line);color:var(--soft);padding:4px 10px;flex:none}
+.add{background:transparent;border:2px dashed var(--c);color:var(--ink)}
+.card.full .place .row input{font-size:24px}
+</style>
+</head>
+<body>
+<header>
+<h1>Classmate’s Trip</h1>
+<p>Plan an exciting trip with “be going to”. Tap “Present” to share your group’s plan.</p>
+</header>
+<main id="grid"></main>
+<script>
+const colors=["#ffd6e0","#ffe8b8","#d4f1d8","#cfe8ff","#e3d6ff","#ffd9c7"];
+let data={};
+try{data=JSON.parse(localStorage.getItem("trip-board")||"{}")}catch(e){}
+function save(){try{localStorage.setItem("trip-board",JSON.stringify(data))}catch(e){}}
+const esc=t=>String(t||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+function places(n){
+  let p=data[`g${n}-places`];
+  if(!Array.isArray(p)){p=[{p:data[`g${n}-where`]||"",d:data[`g${n}-do`]||"",x:""}];data[`g${n}-places`]=p}
+  return p;
+}
+function renderPlaces(n){
+  document.getElementById(`pl${n}`).innerHTML=places(n).map((x,i)=>`<div class="place"><div class="row"><span aria-hidden="true">📍</span><input data-n="${n}" data-i="${i}" data-f="p" aria-label="Place ${i+1} name" placeholder="Place ${i+1}: We are going to visit ..." value="${esc(x.p)}"><button type="button" class="x" data-rm="${i}" data-n="${n}" aria-label="Remove place ${i+1}">✕</button></div>
+<textarea rows="2" data-n="${n}" data-i="${i}" data-f="x" aria-label="Place ${i+1} prediction" placeholder="Look at the picture! It is going to ...">${esc(x.x)}</textarea>
+<textarea rows="2" data-n="${n}" data-i="${i}" data-f="d" aria-label="Place ${i+1} plans" placeholder="We are going to ... (swim, eat, take photos)">${esc(x.d)}</textarea></div>`).join("");
+}
+const grid=document.getElementById("grid");
+const fld=(n,k,l,p,type)=>{const id=`g${n}-${k}`,v=data[id]||"";
+  return type==="input"?`<label for="${id}">${l}</label><input class="${k==='title'?'trip':''}" id="${id}" data-k="${id}" placeholder="${p}" value="${esc(v)}">`
+  :`<label for="${id}">${l}</label><textarea id="${id}" data-k="${id}" rows="${k==='members'?3:2}" placeholder="${p}">${esc(v)}</textarea>`};
+colors.forEach((c,i)=>{
+  const n=i+1,card=document.createElement("section");
+  card.className="card";card.style.setProperty("--c",c);
+  card.innerHTML=`<div class="top"><span class="badge">Group ${n}</span><input aria-label="Group ${n} name" data-k="g${n}-name" placeholder="Group name" value="${esc(data[`g${n}-name`])}"><button type="button" class="pbtn">Present</button></div>
+<div class="body">${fld(n,"title","Trip title","Our trip to ...","input")}${fld(n,"members","Group members","One name on each line")}${fld(n,"when","When?","We are going to go in ...")}<label>Places we are going to visit</label><div id="pl${n}" style="display:flex;flex-direction:column;gap:10px"></div><button type="button" class="add" data-add="${n}">+ Add a place</button>${fld(n,"why","Why do we want to go?","Because ...")}${fld(n,"pitch","Why should classmates choose our trip?","We think you should choose our trip because ...")}</div>`;
+  grid.appendChild(card);renderPlaces(n);
+});
+grid.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.k){data[t.dataset.k]=t.value;save()}
+  else if(t.dataset.f){places(t.dataset.n)[t.dataset.i][t.dataset.f]=t.value;save()}
+});
+grid.addEventListener("click",e=>{
+  const add=e.target.closest("[data-add]");
+  if(add){const n=add.dataset.add;places(n).push({p:"",d:"",x:""});save();renderPlaces(n);const ins=document.querySelectorAll(`#pl${n} input`);ins[ins.length-1].focus();return}
+  const rm=e.target.closest("[data-rm]");
+  if(rm){const n=rm.dataset.n,p=places(n);p.splice(+rm.dataset.rm,1);if(!p.length)p.push({p:"",d:"",x:""});save();renderPlaces(n);return}
+  const b=e.target.closest(".pbtn");if(!b)return;
+  const card=b.closest(".card"),on=card.classList.toggle("full");
+  b.textContent=on?"Back":"Present";document.body.style.overflow=on?"hidden":"";
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const f=document.querySelector(".card.full");if(f)f.querySelector(".pbtn").click()}});
+</script>
+</body>
+</html>
